@@ -1,6 +1,9 @@
 build
 .git
 target
+.settings
+.project
+.classpath
 
 # Logs and databases #
 ######################
