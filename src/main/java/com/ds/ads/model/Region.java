@@ -7,7 +7,8 @@ import javax.persistence.ManyToOne;
 import javax.validation.constraints.NotNull;
 
 @Entity
-public class City {
+public class Region {
+    
     @Id
     @GeneratedValue
     private long id;
@@ -15,10 +16,6 @@ public class City {
     @NotNull
     @ManyToOne
     private Country country;
-    
-    @NotNull
-    @ManyToOne
-    private Region region;
     
     @NotNull
     private String name;
@@ -39,14 +36,6 @@ public class City {
         this.country = country;
     }
 
-    public Region getRegion() {
-        return region;
-    }
-
-    public void setRegion(Region region) {
-        this.region = region;
-    }
-
     public String getName() {
         return name;
     }
@@ -54,5 +43,6 @@ public class City {
     public void setName(String name) {
         this.name = name;
     }
-
+    
+    
 }

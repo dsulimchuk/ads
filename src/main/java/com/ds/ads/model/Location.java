@@ -15,46 +15,43 @@ public class Location {
     
     @NotNull
     @ManyToOne
+    private Region region;
+    
+    @ManyToOne
     private City city;
     
-    @NotNull
-    private String District;
-    /**
-     * @return the id
-     */
+    private String address;
+
     public long getId() {
         return id;
     }
-    /**
-     * @param id the id to set
-     */
+
     public void setId(long id) {
         this.id = id;
     }
-    /**
-     * @return the city
-     */
+
+    public Region getRegion() {
+        return region;
+    }
+
+    public void setRegion(Region region) {
+        this.region = region;
+    }
+
     public City getCity() {
         return city;
     }
-    /**
-     * @param city the city to set
-     */
+
     public void setCity(City city) {
         this.city = city;
     }
-    /**
-     * @return the district
-     */
-    public String getDistrict() {
-        return District;
+
+    public String getAddress() {
+        return address;
     }
-    /**
-     * @param district the district to set
-     */
-    public void setDistrict(String district) {
-        District = district;
+
+    public void setAddress(String address) {
+        this.address = address;
     }
-    
     
 }

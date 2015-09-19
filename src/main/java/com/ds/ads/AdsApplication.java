@@ -1,6 +1,7 @@
 package com.ds.ads;
 
 import java.util.Properties;
+import java.util.stream.IntStream;
 
 import org.apache.tomcat.jdbc.pool.DataSource;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -9,14 +10,17 @@ import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.context.ApplicationContext;
 import org.springframework.context.annotation.Bean;
+import org.springframework.context.annotation.ComponentScan;
 import org.springframework.orm.jpa.LocalContainerEntityManagerFactoryBean;
 import org.springframework.orm.jpa.vendor.HibernateJpaVendorAdapter;
 
+import com.ds.ads.model.Phone;
 import com.ds.ads.model.User;
+import com.ds.ads.services.PhonesRepository;
 import com.ds.ads.services.UserRepository;
 
 @SpringBootApplication
-//@ComponentScan(basePackages="com.ds.ads")
+@ComponentScan(basePackages="com.ds.ads")
 //@EnableWebMvc
 //@EnableTransactionManagement
 //@EnableJpaRepositories("com.ds.ads.model")
@@ -24,27 +28,38 @@ public class AdsApplication implements CommandLineRunner{
 
   @Autowired
   private UserRepository userRep;
+  
+  @Autowired
+  private PhonesRepository phonesRep;
     
     public static void main(String[] args) {
     	ApplicationContext ctx = SpringApplication.run(AdsApplication.class, args);
-    	//Arrays.stream(ctx.getBeanDefinitionNames()).forEach(System.out::println);
-    	
-    	
     }
 
     @Override
     public void run(String... args) throws Exception {
-	User user = new User();
-	user.setName("ds");
-	user.setLogin("ds1");
-	user.setPass("pass");
-	userRep.save (user);
+	
+	//test fill users
+	IntStream.rangeClosed(0, 100).forEach(idx -> {
+	    User user = new User();
+	    user.setName("ds_" + idx);
+	    user.setLogin("ds_" + idx);
+	    user.setPass("pass" + idx);
+	    userRep.save (user);
+	    
+	    Phone phone1 = new Phone("812", Integer.valueOf(idx).toString());
+	    phone1.setUser(user);
+	    phonesRep.save(phone1);
+	    
+	});
+	
+	//userRep.delete(user.getId());
+	
 	
     }
     
     @Bean
     public static DataSource dataSource() {
-	System.out.println(Thread.currentThread().getStackTrace());
 	DataSource dataSource = new DataSource();
 	dataSource.setDriverClassName("org.h2.Driver");
 	dataSource.setUrl("jdbc:h2:mem:tratata");
@@ -65,10 +80,10 @@ public class AdsApplication implements CommandLineRunner{
         Properties properties = new Properties();
         properties.getProperty("jpa.properties");
         System.out.println("!!!!!" + properties.toString());
-//        properties.setProperty("hibernate.hbm2ddl.auto", "create-drop");
-//        properties.setProperty("hibernate.dialect", "org.hibernate.dialect.H2Dialect");
-//        properties.setProperty("hibernate.show_sql", "true");
-//        properties.setProperty("hibernate.format_sql", "true");
+        properties.setProperty("hibernate.hbm2ddl.auto", "create-drop");
+        properties.setProperty("hibernate.dialect", "org.hibernate.dialect.H2Dialect");
+        properties.setProperty("hibernate.show_sql", "true");
+        properties.setProperty("hibernate.format_sql", "true");
 //        
         return properties;
     }

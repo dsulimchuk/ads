@@ -1,5 +1,6 @@
 package com.ds.ads.model;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import javax.persistence.Entity;
@@ -28,8 +29,15 @@ public class User {
     @ManyToOne
     private Location location;
  
-    @OneToMany
-    private List<Phones> phones;
+    @OneToMany(mappedBy="user")
+    private List<Phone> phones;
+    
+    public void addPhone(Phone phone) {
+	if (this.phones == null) {
+	    this.phones = new ArrayList<>();
+	}
+	phones.add(phone);
+    }
     /**
      * @return the id
      */
@@ -93,13 +101,13 @@ public class User {
     /**
      * @return the phones
      */
-    public List<Phones> getPhones() {
+    public List<Phone> getPhones() {
         return phones;
     }
     /**
      * @param phones the phones to set
      */
-    public void setPhones(List<Phones> phones) {
+    public void setPhones(List<Phone> phones) {
         this.phones = phones;
     }
     /* (non-Javadoc)
@@ -110,7 +118,4 @@ public class User {
 	return "User [id=" + id + ", login=" + login + ", pass=" + pass + ", name=" + name + ", location=" + location
 		+ ", phones=" + phones + "]";
     }
-
-    
-    
 }

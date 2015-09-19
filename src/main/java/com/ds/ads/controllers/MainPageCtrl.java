@@ -1,4 +1,4 @@
-package com.ds.ads;
+package com.ds.ads.controllers;
 
 import org.springframework.boot.autoconfigure.EnableAutoConfiguration;
 import org.springframework.stereotype.Controller;
@@ -7,12 +7,12 @@ import org.springframework.web.bind.annotation.ResponseBody;
 
 @Controller
 @EnableAutoConfiguration
-public class SampleController {
+public class MainPageCtrl {
 
     @RequestMapping("/")
     @ResponseBody
     String home() {
-        return "Hello World!";
+	return "Intentionally left blank";
     }
 
    
