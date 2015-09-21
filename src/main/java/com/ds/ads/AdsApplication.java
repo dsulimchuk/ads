@@ -20,44 +20,42 @@ import com.ds.ads.services.PhonesRepository;
 import com.ds.ads.services.UserRepository;
 
 @SpringBootApplication
-@ComponentScan(basePackages="com.ds.ads")
-//@EnableWebMvc
-//@EnableTransactionManagement
-//@EnableJpaRepositories("com.ds.ads.model")
-public class AdsApplication implements CommandLineRunner{
+@ComponentScan(basePackages = "com.ds.ads")
+// @EnableTransactionManagement
+// @EnableJpaRepositories("com.ds.ads.model")
+public class AdsApplication implements CommandLineRunner {
 
-  @Autowired
-  private UserRepository userRep;
-  
-  @Autowired
-  private PhonesRepository phonesRep;
-    
+    @Autowired
+    private UserRepository userRep;
+
+    @Autowired
+    private PhonesRepository phonesRep;
+
     public static void main(String[] args) {
-    	ApplicationContext ctx = SpringApplication.run(AdsApplication.class, args);
+	ApplicationContext ctx = SpringApplication.run(AdsApplication.class, args);
     }
 
     @Override
     public void run(String... args) throws Exception {
-	
-	//test fill users
+
+	// test fill users
 	IntStream.rangeClosed(0, 100).forEach(idx -> {
 	    User user = new User();
 	    user.setName("ds_" + idx);
 	    user.setLogin("ds_" + idx);
 	    user.setPass("pass" + idx);
-	    userRep.save (user);
-	    
+	    userRep.save(user);
+
 	    Phone phone1 = new Phone("812", Integer.valueOf(idx).toString());
 	    phone1.setUser(user);
 	    phonesRep.save(phone1);
-	    
+
 	});
-	
-	//userRep.delete(user.getId());
-	
-	
+
+	// userRep.delete(user.getId());
+
     }
-    
+
     @Bean
     public static DataSource dataSource() {
 	DataSource dataSource = new DataSource();
@@ -65,35 +63,35 @@ public class AdsApplication implements CommandLineRunner{
 	dataSource.setUrl("jdbc:h2:mem:tratata");
 	return dataSource;
     }
-    
+
     @Bean
     public static LocalContainerEntityManagerFactoryBean entityManagerFactory() {
-        LocalContainerEntityManagerFactoryBean entityManagerFactoryBean = new LocalContainerEntityManagerFactoryBean();
-        entityManagerFactoryBean.setDataSource(dataSource());
-        entityManagerFactoryBean.setJpaVendorAdapter(new HibernateJpaVendorAdapter());
-        entityManagerFactoryBean.setPackagesToScan("com.ds.ads.model");
-        entityManagerFactoryBean.setJpaProperties(jpaProperties());
-        return entityManagerFactoryBean;
+	LocalContainerEntityManagerFactoryBean entityManagerFactoryBean = new LocalContainerEntityManagerFactoryBean();
+	entityManagerFactoryBean.setDataSource(dataSource());
+	entityManagerFactoryBean.setJpaVendorAdapter(new HibernateJpaVendorAdapter());
+	entityManagerFactoryBean.setPackagesToScan("com.ds.ads.model");
+	entityManagerFactoryBean.setJpaProperties(jpaProperties());
+	return entityManagerFactoryBean;
     }
- 
+
     private static Properties jpaProperties() {
-        Properties properties = new Properties();
-        properties.getProperty("jpa.properties");
-        System.out.println("!!!!!" + properties.toString());
-        properties.setProperty("hibernate.hbm2ddl.auto", "create-drop");
-        properties.setProperty("hibernate.dialect", "org.hibernate.dialect.H2Dialect");
-        properties.setProperty("hibernate.show_sql", "true");
-        properties.setProperty("hibernate.format_sql", "true");
-//        
-        return properties;
+	Properties properties = new Properties();
+	properties.getProperty("jpa.properties");
+	System.out.println("!!!!!" + properties.toString());
+	properties.setProperty("hibernate.hbm2ddl.auto", "create-drop");
+	properties.setProperty("hibernate.dialect", "org.hibernate.dialect.H2Dialect");
+	properties.setProperty("hibernate.show_sql", "true");
+	properties.setProperty("hibernate.format_sql", "true");
+	//
+	return properties;
     }
-//    
-//    @Bean
-//    public JpaTransactionManager transactionManager() {
-//        JpaTransactionManager transactionManager = new JpaTransactionManager();
-//        transactionManager.setEntityManagerFactory(entityManagerFactory().getObject());
-//        transactionManager.setDataSource(dataSource());
-//        return transactionManager;
-//    }
-    
+    //
+    // @Bean
+    // public JpaTransactionManager transactionManager() {
+    // JpaTransactionManager transactionManager = new JpaTransactionManager();
+    // transactionManager.setEntityManagerFactory(entityManagerFactory().getObject());
+    // transactionManager.setDataSource(dataSource());
+    // return transactionManager;
+    // }
+
 }
