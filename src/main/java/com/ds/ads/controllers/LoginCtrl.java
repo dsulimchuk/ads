@@ -5,6 +5,7 @@ import org.springframework.boot.autoconfigure.EnableAutoConfiguration;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.ds.ads.model.User;
@@ -18,7 +19,8 @@ public class LoginCtrl {
    @Autowired
     private UserRepository userRep;
     
-    @RequestMapping(value="/info",method=RequestMethod.GET)
+    @RequestMapping(value="/info",method=RequestMethod.GET, produces="application/json")
+    @ResponseBody
     public Iterable<User> getAllUsers() {
 	Iterable<User> result = userRep.findAll();
 	return result;

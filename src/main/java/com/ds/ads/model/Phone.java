@@ -7,9 +7,13 @@ import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.Table;
 import javax.validation.constraints.NotNull;
+import javax.xml.bind.annotation.XmlRootElement;
+
+import com.fasterxml.jackson.annotation.JsonIgnore;
 
 @Entity
 @Table(name="phones")
+@XmlRootElement
 public class Phone {
     @Id
     @GeneratedValue
@@ -24,7 +28,7 @@ public class Phone {
     
     @ManyToOne
     @JoinColumn(name = "user_id")
-    @N
+    @JsonIgnore
     private User user;
     
     

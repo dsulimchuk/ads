@@ -10,8 +10,11 @@ import javax.persistence.Id;
 import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
 import javax.validation.constraints.NotNull;
+import javax.xml.bind.annotation.XmlRootElement;
+import javax.xml.bind.annotation.XmlTransient;
 
 @Entity
+@XmlRootElement
 public class User {
     @Id
     @GeneratedValue(strategy=GenerationType.SEQUENCE)
@@ -30,6 +33,7 @@ public class User {
     private Location location;
  
     @OneToMany(mappedBy="user")
+    @XmlTransient
     private List<Phone> phones;
     
     public void addPhone(Phone phone) {
