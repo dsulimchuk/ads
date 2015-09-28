@@ -14,12 +14,10 @@ public class Country {
     @GeneratedValue(strategy=GenerationType.SEQUENCE)
     private long id;
     
-    @NotNull
     @Column(unique=true)
     private String name;
     
 
-    @NotNull
     @Column(unique=true)
     private String code;
 

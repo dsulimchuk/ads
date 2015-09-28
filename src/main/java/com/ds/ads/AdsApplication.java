@@ -37,18 +37,17 @@ public class AdsApplication implements CommandLineRunner {
 
     @Override
     public void run(String... args) throws Exception {
-
-	// test fill users
+	
+	
+//	// test fill users
 	IntStream.rangeClosed(0, 100).forEach(idx -> {
 	    User user = new User();
 	    user.setName("ds_" + idx);
 	    user.setLogin("ds_" + idx);
 	    user.setPass("pass" + idx);
-	    userRep.save(user);
-
 	    Phone phone1 = new Phone("812", Integer.valueOf(idx).toString());
-	    phone1.setUser(user);
-	    phonesRep.save(phone1);
+	    user.addPhone(phone1);
+	    userRep.save(user);
 
 	});
 
@@ -60,7 +59,7 @@ public class AdsApplication implements CommandLineRunner {
     public static DataSource dataSource() {
 	DataSource dataSource = new DataSource();
 	dataSource.setDriverClassName("org.h2.Driver");
-	dataSource.setUrl("jdbc:h2:mem:tratata");
+	dataSource.setUrl("jdbc:h2:mem:db1;DB_CLOSE_DELAY=-1;DB_CLOSE_ON_EXIT=FALSE");
 	return dataSource;
     }
 

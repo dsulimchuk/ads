@@ -26,13 +26,6 @@ public class Phone {
     
     private String memo;
     
-    @ManyToOne
-    @JoinColumn(name = "user_id")
-    @JsonIgnore
-    private User user;
-    
-    
-    
     @Override
     public String toString() {
 	return "(" + phoneCode + ")" + phoneNumber + " [" + memo + "]";
@@ -94,14 +87,5 @@ public class Phone {
     public void setPhoneNumber(String phoneNumber) {
         this.phoneNumber = phoneNumber;
     }
-    public User getUser() {
-        return user;
-    }
-    public void setUser(User user) {
-        this.user = user;
-    }
-    
-    
-
     
 }
