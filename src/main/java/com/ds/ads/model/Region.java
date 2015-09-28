@@ -13,11 +13,9 @@ public class Region {
     @GeneratedValue
     private long id;
     
-    @NotNull
     @ManyToOne
     private Country country;
     
-    @NotNull
     private String name;
 
     public long getId() {

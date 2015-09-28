@@ -13,7 +13,6 @@ public class Location {
     @GeneratedValue(strategy = GenerationType.SEQUENCE)
     private long id;
     
-    @NotNull
     @ManyToOne
     private Region region;
     
