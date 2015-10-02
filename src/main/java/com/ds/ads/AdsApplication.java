@@ -1,9 +1,17 @@
 package com.ds.ads;
 
+import java.io.IOException;
+import java.net.URISyntaxException;
+import java.net.URL;
+import java.nio.file.Files;
+import java.nio.file.Paths;
+import java.util.Arrays;
 import java.util.Properties;
 import java.util.stream.IntStream;
 
 import org.apache.tomcat.jdbc.pool.DataSource;
+import org.hibernate.SessionFactory;
+import org.hibernate.cfg.Configuration;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.boot.SpringApplication;
@@ -19,6 +27,7 @@ import com.ds.ads.model.User;
 import com.ds.ads.services.PhonesRepository;
 import com.ds.ads.services.UserRepository;
 
+
 @SpringBootApplication
 @ComponentScan(basePackages = "com.ds.ads")
 // @EnableTransactionManagement
@@ -33,26 +42,14 @@ public class AdsApplication implements CommandLineRunner {
 
     public static void main(String[] args) {
 	ApplicationContext ctx = SpringApplication.run(AdsApplication.class, args);
+//	SessionFactory factory = new Configuration().configure().buildSessionFactory(null);
+//	factory.openSession();
+	
     }
 
     @Override
     public void run(String... args) throws Exception {
 	
-	
-//	// test fill users
-	IntStream.rangeClosed(0, 100).forEach(idx -> {
-	    User user = new User();
-	    user.setName("ds_" + idx);
-	    user.setLogin("ds_" + idx);
-	    user.setPass("pass" + idx);
-	    Phone phone1 = new Phone("812", Integer.valueOf(idx).toString());
-	    user.addPhone(phone1);
-	    userRep.save(user);
-
-	});
-
-	// userRep.delete(user.getId());
-
     }
 
     @Bean
@@ -75,7 +72,16 @@ public class AdsApplication implements CommandLineRunner {
 
     private static Properties jpaProperties() {
 	Properties properties = new Properties();
-	properties.getProperty("jpa.properties");
+	
+	try {
+	    URL url = AdsApplication.class.getResource("jpa.properties");
+	    System.out.println(url);
+	    properties.load(Files.newBufferedReader(Paths.get(url.toURI())));
+	} catch (IOException e) {
+	    e.printStackTrace();
+	} catch (URISyntaxException e) {
+	    e.printStackTrace();
+	}
 	System.out.println("!!!!!" + properties.toString());
 	properties.setProperty("hibernate.hbm2ddl.auto", "create-drop");
 	properties.setProperty("hibernate.dialect", "org.hibernate.dialect.H2Dialect");

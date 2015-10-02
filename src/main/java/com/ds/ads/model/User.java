@@ -5,9 +5,11 @@ import java.util.List;
 
 import javax.persistence.CascadeType;
 import javax.persistence.Entity;
+import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
 import javax.validation.constraints.NotNull;
@@ -35,9 +37,9 @@ public class User {
     @ManyToOne
     private Location location;
  
-    @OneToMany(cascade=CascadeType.ALL)
+    @OneToMany(cascade=CascadeType.ALL, mappedBy="user", fetch=FetchType.EAGER)
     @XmlTransient
-    private List<Phone> phones;
+    private List<Phone> phones = new ArrayList<>();
     
     public void addPhone(Phone phone) {
 	if (this.phones == null) {

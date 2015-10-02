@@ -1,7 +1,10 @@
 package com.ds.ads.model;
 
+import java.util.Objects;
+
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
@@ -16,7 +19,7 @@ import com.fasterxml.jackson.annotation.JsonIgnore;
 @XmlRootElement
 public class Phone {
     @Id
-    @GeneratedValue
+    @GeneratedValue(strategy=GenerationType.SEQUENCE)
     private long id;
     
     private String phoneCode;
@@ -26,9 +29,12 @@ public class Phone {
     
     private String memo;
     
+    @ManyToOne
+    private User user;
+    
     @Override
     public String toString() {
-	return "(" + phoneCode + ")" + phoneNumber + " [" + memo + "]";
+	return "(" + phoneCode + ")" + phoneNumber + " [" + memo + "]" + id + " " + (user == null);
     }
     /**
      * @return the memo
@@ -86,6 +92,12 @@ public class Phone {
      */
     public void setPhoneNumber(String phoneNumber) {
         this.phoneNumber = phoneNumber;
+    }
+    public User getUser() {
+        return user;
+    }
+    public void setUser(User user) {
+        this.user = user;
     }
     
 }
