@@ -1,27 +1,12 @@
 package com.ds.ads.model;
 
-import java.util.Objects;
-
-import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
-import javax.persistence.JoinColumn;
-import javax.persistence.ManyToOne;
-import javax.persistence.Table;
+import javax.persistence.Embeddable;
 import javax.validation.constraints.NotNull;
-import javax.xml.bind.annotation.XmlRootElement;
 
-import com.fasterxml.jackson.annotation.JsonIgnore;
-
-@Entity
-@Table(name="phones")
-@XmlRootElement
+@Embeddable
 public class Phone {
-    @Id
-    @GeneratedValue(strategy=GenerationType.SEQUENCE)
-    private long id;
     
+    @NotNull
     private String phoneCode;
     
     @NotNull
@@ -29,12 +14,10 @@ public class Phone {
     
     private String memo;
     
-    @ManyToOne
-    private User user;
     
     @Override
     public String toString() {
-	return "(" + phoneCode + ")" + phoneNumber + " [" + memo + "]" + id + " " + (user == null);
+	return "(" + phoneCode + ")" + phoneNumber + " [" + memo + "]";
     }
     /**
      * @return the memo
@@ -57,18 +40,7 @@ public class Phone {
 	this.phoneCode = phoneCode;
 	this.phoneNumber = phoneNumber;
     }
-    /**
-     * @return the id
-     */
-    public long getId() {
-        return id;
-    }
-    /**
-     * @param id the id to set
-     */
-    public void setId(long id) {
-        this.id = id;
-    }
+    
     /**
      * @return the phoneCode
      */
@@ -92,12 +64,6 @@ public class Phone {
      */
     public void setPhoneNumber(String phoneNumber) {
         this.phoneNumber = phoneNumber;
-    }
-    public User getUser() {
-        return user;
-    }
-    public void setUser(User user) {
-        this.user = user;
     }
     
 }
