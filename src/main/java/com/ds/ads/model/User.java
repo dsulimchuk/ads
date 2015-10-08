@@ -1,8 +1,10 @@
 package com.ds.ads.model;
 
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 
+import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.ElementCollection;
 import javax.persistence.Entity;
@@ -13,6 +15,7 @@ import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.JoinTable;
 import javax.persistence.ManyToOne;
+import javax.persistence.SequenceGenerator;
 import javax.validation.constraints.NotNull;
 import javax.xml.bind.annotation.XmlRootElement;
 
@@ -20,11 +23,18 @@ import org.hibernate.annotations.CollectionId;
 import org.hibernate.annotations.GenericGenerator;
 import org.hibernate.annotations.Type;
 
+import com.fasterxml.jackson.core.JsonGenerator;
+import com.fasterxml.jackson.core.JsonProcessingException;
+import com.fasterxml.jackson.databind.JsonSerializable;
+import com.fasterxml.jackson.databind.SerializerProvider;
+import com.fasterxml.jackson.databind.jsontype.TypeSerializer;
+
 @Entity
 @XmlRootElement
-public class User {
+public class User implements JsonSerializable{
     @Id
-    @GeneratedValue(strategy=GenerationType.SEQUENCE)
+    @GeneratedValue(strategy=GenerationType.SEQUENCE,generator="user_seq")
+    @SequenceGenerator(name="user_seq",sequenceName="user_seq")
     private long id;
     
     @NotNull
@@ -36,7 +46,8 @@ public class User {
     @NotNull
     private String name;
     
-    @ManyToOne
+    @ManyToOne(cascade=CascadeType.ALL)
+    
     private Location location;
  
     @ElementCollection(fetch=FetchType.EAGER)
@@ -45,16 +56,6 @@ public class User {
     @CollectionId(columns = { @Column(name="user_phones_id") }, generator = "gen1", type = @Type(type="long") )
     private List<Phone> phones = new ArrayList<>();
     
-
-    /* (non-Javadoc)
-     * @see java.lang.Object#toString()
-     */
-    @Override
-    public String toString() {
-	return "User [id=" + id + ", login=" + login + ", pass=" + pass + ", name=" + name + ", location=" + location
-		+ ", phones=" + phones + "]";
-    }
-
 
     public long getId() {
         return id;
@@ -113,5 +114,27 @@ public class User {
 
     public void setPhones(List<Phone> phones) {
         this.phones = phones;
+    }
+
+
+    @Override
+    public void serialize(JsonGenerator jgen, SerializerProvider provider) throws IOException, JsonProcessingException {
+	jgen.writeStartObject();
+	jgen.writeNumberField("id", id);
+	jgen.writeStringField("login", login);
+	jgen.writeStringField("name", name);
+	jgen.writeStringField("pass", pass);
+	jgen.writeStringField("location_id", (location==null)?"null":String.valueOf(location.getId()));
+	
+	jgen.writeEndObject();
+	
+    }
+
+
+    @Override
+    public void serializeWithType(JsonGenerator jgen, SerializerProvider provider, TypeSerializer typeSer)
+	    throws IOException, JsonProcessingException {
+	// TODO Auto-generated method stub
+	
     }
 }

@@ -1,5 +1,6 @@
 package com.ds.ads.model;
 
+import javax.persistence.CascadeType;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
@@ -13,11 +14,7 @@ public class City {
     private long id;
     
     @NotNull
-    @ManyToOne
-    private Country country;
-    
-    @NotNull
-    @ManyToOne
+    @ManyToOne(cascade=CascadeType.ALL)
     private Region region;
     
     @NotNull
@@ -29,14 +26,6 @@ public class City {
 
     public void setId(long id) {
         this.id = id;
-    }
-
-    public Country getCountry() {
-        return country;
-    }
-
-    public void setCountry(Country country) {
-        this.country = country;
     }
 
     public Region getRegion() {
@@ -55,4 +44,5 @@ public class City {
         this.name = name;
     }
 
+    
 }

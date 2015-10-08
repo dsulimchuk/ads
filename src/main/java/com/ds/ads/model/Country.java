@@ -5,20 +5,23 @@ import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
-import javax.validation.constraints.NotNull;
+import javax.persistence.Index;
+import javax.persistence.Table;
+
+import com.fasterxml.jackson.annotation.JsonSetter;
 
 @Entity
+@Table(indexes=@Index(columnList="code", unique=true))
 public class Country {
 
     @Id
     @GeneratedValue(strategy=GenerationType.SEQUENCE)
     private long id;
     
-    @Column(unique=true)
+    @Column(nullable=false)
     private String name;
     
-
-    @Column(unique=true)
+    @Column(nullable=false)
     private String code;
 
     public long getId() {
@@ -32,7 +35,7 @@ public class Country {
     public String getName() {
         return name;
     }
-
+    
     public void setName(String name) {
         this.name = name;
     }
@@ -41,8 +44,9 @@ public class Country {
 	return code;
     }
     
+    @JsonSetter("code")
     public void setCode(String code) {
-	this.code = code;
+	this.code = code.toLowerCase();
     }
     
 }

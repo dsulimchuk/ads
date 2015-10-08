@@ -1,11 +1,11 @@
 package com.ds.ads.model;
 
+import javax.persistence.CascadeType;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.ManyToOne;
-import javax.validation.constraints.NotNull;
 
 @Entity
 public class Location {
@@ -13,10 +13,7 @@ public class Location {
     @GeneratedValue(strategy = GenerationType.SEQUENCE)
     private long id;
     
-    @ManyToOne
-    private Region region;
-    
-    @ManyToOne
+    @ManyToOne(cascade=CascadeType.ALL)
     private City city;
     
     private String address;
@@ -27,14 +24,6 @@ public class Location {
 
     public void setId(long id) {
         this.id = id;
-    }
-
-    public Region getRegion() {
-        return region;
-    }
-
-    public void setRegion(Region region) {
-        this.region = region;
     }
 
     public City getCity() {

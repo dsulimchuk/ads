@@ -12,7 +12,7 @@ import com.ds.ads.model.User;
 import com.ds.ads.services.UserRepository;
 
 @RestController()
-@RequestMapping("/api/login")
+@RequestMapping("/api1/login")
 @EnableAutoConfiguration
 public class LoginCtrl {
 
