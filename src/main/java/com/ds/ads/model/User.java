@@ -4,125 +4,149 @@ import java.util.ArrayList;
 import java.util.List;
 
 import javax.persistence.CascadeType;
+import javax.persistence.Column;
+import javax.persistence.ElementCollection;
 import javax.persistence.Entity;
+import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.JoinColumn;
+import javax.persistence.JoinTable;
 import javax.persistence.ManyToOne;
-import javax.persistence.OneToMany;
-import javax.validation.constraints.NotNull;
-import javax.xml.bind.annotation.XmlRootElement;
-import javax.xml.bind.annotation.XmlTransient;
+import javax.persistence.SequenceGenerator;
 
-import org.hibernate.engine.internal.Cascade;
+import org.hibernate.annotations.CollectionId;
+import org.hibernate.annotations.Type;
+
+import com.fasterxml.jackson.annotation.JsonSetter;
 
 @Entity
-@XmlRootElement
 public class User {
     @Id
-    @GeneratedValue(strategy=GenerationType.SEQUENCE)
-    private long id;
+    @GeneratedValue(strategy=GenerationType.SEQUENCE,generator="user_seq")
+    @SequenceGenerator(name="user_seq",sequenceName="user_seq")
+    private Long id;
     
-    @NotNull
+    @Column(unique=true, nullable=false)
     private String login;
     
-    @NotNull
+    @Column(nullable=false)
     private String pass;
     
-    @NotNull
+    @Column(nullable=false)
     private String name;
     
-    @ManyToOne
+    @ManyToOne(cascade=CascadeType.PERSIST)
     private Location location;
  
-    @OneToMany(cascade=CascadeType.ALL)
-    @XmlTransient
-    private List<Phone> phones;
-    
-    public void addPhone(Phone phone) {
-	if (this.phones == null) {
-	    this.phones = new ArrayList<>();
-	}
-	phones.add(phone);
-    }
-    /**
-     * @return the id
-     */
-    public long getId() {
+    @ElementCollection(fetch=FetchType.EAGER)
+    @JoinTable(name="user_phones", joinColumns=@JoinColumn(name="user_id"))
+    @SequenceGenerator(name="user_phones_seq", sequenceName="user_phones_seq")
+    @CollectionId(columns = { @Column(name="user_phones_id") }, generator = "user_phones_seq", type = @Type(type="long") )
+    private List<Phone> phones = new ArrayList<>();
+   
+    public Long getId() {
         return id;
     }
-    /**
-     * @param id the id to set
-     */
+
     public void setId(long id) {
         this.id = id;
     }
-    /**
-     * @return the login
-     */
+
     public String getLogin() {
         return login;
     }
-    /**
-     * @param login the login to set
-     */
+
+    @JsonSetter("login")
     public void setLogin(String login) {
-        this.login = login;
+        this.login = login.toLowerCase();
     }
-    /**
-     * @return the pass
-     */
+
     public String getPass() {
         return pass;
     }
-    /**
-     * @param pass the pass to set
-     */
+
     public void setPass(String pass) {
         this.pass = pass;
     }
-    /**
-     * @return the name
-     */
+
     public String getName() {
         return name;
     }
-    /**
-     * @param name the name to set
-     */
+
     public void setName(String name) {
         this.name = name;
     }
-    /**
-     * @return the location
-     */
+
     public Location getLocation() {
         return location;
     }
-    /**
-     * @param location the location to set
-     */
+
     public void setLocation(Location location) {
         this.location = location;
     }
-    /**
-     * @return the phones
-     */
+    
     public List<Phone> getPhones() {
         return phones;
     }
-    /**
-     * @param phones the phones to set
-     */
+
     public void setPhones(List<Phone> phones) {
         this.phones = phones;
     }
-    /* (non-Javadoc)
-     * @see java.lang.Object#toString()
-     */
+
     @Override
-    public String toString() {
-	return "User [id=" + id + ", login=" + login + ", pass=" + pass + ", name=" + name + ", location=" + location
-		+ ", phones=" + phones + "]";
+    public int hashCode() {
+	final int prime = 31;
+	int result = 1;
+	result = prime * result + ((id == null) ? 0 : id.hashCode());
+	result = prime * result + ((location == null) ? 0 : location.hashCode());
+	result = prime * result + ((login == null) ? 0 : login.hashCode());
+	result = prime * result + ((name == null) ? 0 : name.hashCode());
+	result = prime * result + ((pass == null) ? 0 : pass.hashCode());
+	result = prime * result + ((phones == null) ? 0 : phones.hashCode());
+	return result;
+    }
+
+    @Override
+    public boolean equals(Object obj) {
+	if (this == obj)
+	    return true;
+	if (obj == null)
+	    return false;
+	if (!(obj instanceof User))
+	    return false;
+	User other = (User) obj;
+	if (id == null) {
+	    if (other.id != null)
+		return false;
+	} else if (!id.equals(other.id))
+	    return false;
+	if (location == null) {
+	    if (other.location != null)
+		return false;
+	} else if (!location.equals(other.location))
+	    return false;
+	if (login == null) {
+	    if (other.login != null)
+		return false;
+	} else if (!login.equals(other.login))
+	    return false;
+	if (name == null) {
+	    if (other.name != null)
+		return false;
+	} else if (!name.equals(other.name))
+	    return false;
+	if (pass == null) {
+	    if (other.pass != null)
+		return false;
+	} else if (!pass.equals(other.pass))
+	    return false;
+	if (phones == null) {
+	    if (other.phones != null)
+		return false;
+	} else if (!phones.equals(other.phones))
+	    return false;
+	return true;
     }
 }
