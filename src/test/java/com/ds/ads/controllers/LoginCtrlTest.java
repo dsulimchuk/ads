@@ -51,7 +51,7 @@ public class LoginCtrlTest {
 	
 	given().parameters(req).
 	when().post("/api/login/register").
-	then().statusCode(HttpStatus.SC_OK);
+	then().statusCode(HttpStatus.SC_CREATED;
 	
 	assertThat("userRep count now 1", userRep.count(), equalTo(1L));
     }

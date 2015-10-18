@@ -14,24 +14,10 @@ public class Phone {
     
     private String memo;
     
-    
     @Override
     public String toString() {
 	return "(" + phoneCode + ")" + phoneNumber + " [" + memo + "]";
     }
-    /**
-     * @return the memo
-     */
-    public String getMemo() {
-        return memo;
-    }
-    /**
-     * @param memo the memo to set
-     */
-    public void setMemo(String memo) {
-        this.memo = memo;
-    }
-   
     
     public Phone() {
     }
@@ -40,30 +26,68 @@ public class Phone {
 	this.phoneCode = phoneCode;
 	this.phoneNumber = phoneNumber;
     }
-    
-    /**
-     * @return the phoneCode
-     */
+
     public String getPhoneCode() {
         return phoneCode;
     }
-    /**
-     * @param phoneCode the phoneCode to set
-     */
+
     public void setPhoneCode(String phoneCode) {
         this.phoneCode = phoneCode;
     }
-    /**
-     * @return the phoneNumber
-     */
+
     public String getPhoneNumber() {
         return phoneNumber;
     }
-    /**
-     * @param phoneNumber the phoneNumber to set
-     */
+
     public void setPhoneNumber(String phoneNumber) {
         this.phoneNumber = phoneNumber;
     }
+
+    public String getMemo() {
+        return memo;
+    }
+
+    public void setMemo(String memo) {
+        this.memo = memo;
+    }
+
+    @Override
+    public int hashCode() {
+	final int prime = 31;
+	int result = 1;
+	result = prime * result + ((memo == null) ? 0 : memo.hashCode());
+	result = prime * result + ((phoneCode == null) ? 0 : phoneCode.hashCode());
+	result = prime * result + ((phoneNumber == null) ? 0 : phoneNumber.hashCode());
+	return result;
+    }
+
+    @Override
+    public boolean equals(Object obj) {
+	if (this == obj)
+	    return true;
+	if (obj == null)
+	    return false;
+	if (!(obj instanceof Phone))
+	    return false;
+	Phone other = (Phone) obj;
+	if (memo == null) {
+	    if (other.memo != null)
+		return false;
+	} else if (!memo.equals(other.memo))
+	    return false;
+	if (phoneCode == null) {
+	    if (other.phoneCode != null)
+		return false;
+	} else if (!phoneCode.equals(other.phoneCode))
+	    return false;
+	if (phoneNumber == null) {
+	    if (other.phoneNumber != null)
+		return false;
+	} else if (!phoneNumber.equals(other.phoneNumber))
+	    return false;
+	return true;
+    }
+    
+    
     
 }

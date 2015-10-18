@@ -1,7 +1,7 @@
 package com.ds.ads.model;
 
-import java.util.ArrayList;
-import java.util.List;
+import java.util.HashSet;
+import java.util.Set;
 
 import javax.persistence.CascadeType;
 import javax.persistence.Column;
@@ -15,9 +15,6 @@ import javax.persistence.JoinColumn;
 import javax.persistence.JoinTable;
 import javax.persistence.ManyToOne;
 import javax.persistence.SequenceGenerator;
-
-import org.hibernate.annotations.CollectionId;
-import org.hibernate.annotations.Type;
 
 import com.fasterxml.jackson.annotation.JsonSetter;
 
@@ -42,15 +39,16 @@ public class User {
  
     @ElementCollection(fetch=FetchType.EAGER)
     @JoinTable(name="user_phones", joinColumns=@JoinColumn(name="user_id"))
-    @SequenceGenerator(name="user_phones_seq", sequenceName="user_phones_seq")
-    @CollectionId(columns = { @Column(name="user_phones_id") }, generator = "user_phones_seq", type = @Type(type="long") )
-    private List<Phone> phones = new ArrayList<>();
+//    @SequenceGenerator(name="user_phones_seq", sequenceName="user_phones_seq")
+//    @CollectionId(columns = { @Column(name="user_phones_id") }, generator = "user_phones_seq", type = @Type(type="long") )
+    private Set<Phone> phones = new HashSet<>();
    
     public Long getId() {
+	System.out.println(Thread.currentThread().getStackTrace());
         return id;
     }
 
-    public void setId(long id) {
+    public void setId(Long id) {
         this.id = id;
     }
 
@@ -87,11 +85,11 @@ public class User {
         this.location = location;
     }
     
-    public List<Phone> getPhones() {
+    public Set<Phone> getPhones() {
         return phones;
     }
 
-    public void setPhones(List<Phone> phones) {
+    public void setPhones(Set<Phone> phones) {
         this.phones = phones;
     }
 

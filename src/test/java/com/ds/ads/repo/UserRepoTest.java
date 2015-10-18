@@ -1,6 +1,7 @@
-package com.ds.ads;
+package com.ds.ads.repo;
 
-import org.junit.After;
+import java.util.Iterator;
+
 import org.junit.Assert;
 import org.junit.Before;
 import org.junit.BeforeClass;
@@ -9,7 +10,9 @@ import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.SpringApplicationConfiguration;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
+import org.springframework.transaction.annotation.Transactional;
 
+import com.ds.ads.AdsApplication;
 import com.ds.ads.model.City;
 import com.ds.ads.model.Country;
 import com.ds.ads.model.Location;
@@ -32,6 +35,7 @@ public class UserRepoTest {
     
     
     private User uOld = null;
+    
     @BeforeClass
     public static void setUpBeforeClass() throws Exception {
 	c = new Country();
@@ -49,8 +53,9 @@ public class UserRepoTest {
     }
 
     @Before
+    @Transactional
     public void setUp() throws Exception {
-	ur.deleteAll();
+	//ur.deleteAll();
 	uOld = new User();
 	uOld.setLogin("ds");
 	uOld.setName("name");
@@ -59,40 +64,47 @@ public class UserRepoTest {
 	uOld.getPhones().add(new Phone("821", "1234567"));
 	uOld.getPhones().add(new Phone("821", "1234568"));
 	
-	Location l = new Location();
-	l.setCity(city);
-	l.setAddress("Newvski prospect");
+	Iterator<Location> locationIter = lr.findAll().iterator();
+	Location l;
+	if (locationIter.hasNext()) {
+	    l = locationIter.next(); 
+	} else  {
+	    	l = new Location();
+    		l.setCity(city);
+    		l.setAddress("Newvski prospect");
+	}
+	uOld = ur.save(uOld);
 	
 	uOld.setLocation(l);
+	uOld = ur.save(uOld);
+	
     }
 
-    @Test
-    public void testThatUserIdIsNotNullAfterSave() {
-	Assert.assertNotNull(uOld);
-	Assert.assertNull(uOld.getId());
-	ur.save(uOld);
-	Assert.assertNotNull(uOld.getId());
-    }
     
     @Test
+    @Transactional
     public void testThatICanSaveUserManyTimes() {
-	ur.save(uOld);
-	ur.save(uOld);
-	ur.save(uOld);
-	
+	uOld = ur.save(uOld);
+	uOld = ur.save(uOld);
+	uOld = ur.save(uOld);
     }
     
     @Test
     public void testThatRecievedObjIsEqualsToOld() {
-	ur.save(uOld);
 	User uNew = ur.findOne(uOld.getId());
 	Assert.assertNotNull(uNew);
-	
+	Assert.assertEquals(uOld, uNew);
+	ur.delete(uNew);
     }    
     
-    @After
-    public void SetDown(){
-//	ur.deleteAll();
-    }
+    @Test
+    public void testThatRecievedObjAfterModifyNotEqToOld() {
+	User uNew = ur.findOne(uOld.getId());
+	Assert.assertNotNull(uNew);
+	Assert.assertEquals(uOld, uNew);
+	uNew.getPhones().add(new Phone("821", "1234569"));
+	Assert.assertNotEquals(uOld, uNew);
+	ur.delete(uNew);
+    }   
 
 }
