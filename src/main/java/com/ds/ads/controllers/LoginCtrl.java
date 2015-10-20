@@ -2,9 +2,11 @@ package com.ds.ads.controllers;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.autoconfigure.EnableAutoConfiguration;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
-import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.RestController;
 
@@ -12,7 +14,7 @@ import com.ds.ads.model.User;
 import com.ds.ads.services.UserRepository;
 
 @RestController()
-@RequestMapping("/api1/login")
+@RequestMapping("/api/login")
 @EnableAutoConfiguration
 public class LoginCtrl {
 
@@ -27,17 +29,13 @@ public class LoginCtrl {
     }
 
     @RequestMapping(value = "/register", method = RequestMethod.POST)
-    public User register(@RequestParam String login, @RequestParam String pass, @RequestParam String name) {
-	if ( userRep.findByLogin(login) != null ) {
-	    throw new RuntimeException("Such user login already exists" + name);
+    public ResponseEntity<User> register(@RequestBody User userFromQuery) {
+	if ( userRep.findByLogin(userFromQuery.getLogin()) != null ) {
+	    return new ResponseEntity<User>(HttpStatus.CONFLICT);
 	}
-	User user = new User();
-	user.setLogin(login);
-	user.setPass(pass);
-	user.setName(name);
-
-	userRep.save(user);
 	
-	return user;
+	userFromQuery = userRep.save(userFromQuery);
+	
+	return new ResponseEntity<User>(userFromQuery, HttpStatus.CREATED);
     }
 }

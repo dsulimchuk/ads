@@ -5,7 +5,7 @@ import org.springframework.data.rest.core.annotation.RepositoryRestResource;
 
 import com.ds.ads.model.User;
 
-@RepositoryRestResource(path="user")
+@RepositoryRestResource(path="user", exported=false)
 public interface UserRepository extends CrudRepository<User, Long> {
     
     User findByLogin(String login);
