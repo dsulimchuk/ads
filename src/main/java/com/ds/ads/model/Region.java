@@ -1,15 +1,9 @@
 package com.ds.ads.model;
 
-import javax.persistence.CascadeType;
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
-import javax.persistence.ManyToOne;
-import javax.persistence.SequenceGenerator;
+import javax.persistence.*;
 
 @Entity
+@Table(indexes=@Index(columnList="country", unique=false), name="regions")
 public class Region {
     
     @Id
@@ -82,8 +76,8 @@ public class Region {
 	} else if (!name.equals(other.name))
 	    return false;
 	return true;
-    } 
-    
-    
-    
+    }
+
+
+
 }

@@ -5,7 +5,7 @@ import org.springframework.data.rest.core.annotation.RepositoryRestResource;
 
 import com.ds.ads.model.City;
 
-@RepositoryRestResource(path="city")
+@RepositoryRestResource()
 public interface CityRepository extends CrudRepository<City, Long>{
 
 }
