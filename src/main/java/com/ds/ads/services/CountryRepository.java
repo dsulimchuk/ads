@@ -6,10 +6,11 @@ import org.springframework.data.rest.core.annotation.RepositoryRestResource;
 
 import com.ds.ads.model.Country;
 
-@RepositoryRestResource(path="country")
+@RepositoryRestResource()
 public interface CountryRepository extends CrudRepository<Country, Long>{
 
-    public Country findByCode(@Param("code") String code);
+    Country findByCode(@Param("code") String code);
+    
 }
 
 

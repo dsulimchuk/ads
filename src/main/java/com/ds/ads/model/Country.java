@@ -12,7 +12,7 @@ import javax.persistence.Table;
 import com.fasterxml.jackson.annotation.JsonSetter;
 
 @Entity
-@Table(indexes=@Index(columnList="code", unique=true))
+@Table(indexes=@Index(columnList="code", unique=true), name="countries")
 public class Country {
 
     @Id
@@ -21,11 +21,11 @@ public class Country {
     private Long id;
     
     @Column(nullable=false)
-    private String name;
+    private String code;
     
     @Column(nullable=false)
-    private String code;
-
+    private String name;
+    
     public Long getId() {
         return id;
     }

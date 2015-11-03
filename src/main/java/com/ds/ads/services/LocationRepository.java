@@ -5,7 +5,7 @@ import org.springframework.data.rest.core.annotation.RepositoryRestResource;
 
 import com.ds.ads.model.Location;
 
-@RepositoryRestResource(path="location")
+@RepositoryRestResource()
 public interface LocationRepository extends CrudRepository<Location, Long>{
 
 }
