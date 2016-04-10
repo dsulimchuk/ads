@@ -24,34 +24,34 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 
 @SpringBootApplication
 @EnableJpaRepositories("com.ds.ads")
-public class AdsApplication implements CommandLineRunner{
+public class AdsApplication implements CommandLineRunner {
     private static Logger logger = LoggerFactory.getLogger(AdsApplication.class);
-    
+
     public static class CountryKeeper {
-	@JsonProperty("_embedded")
-	private List<Country> countries;
+        @JsonProperty("_embedded")
+        private List<Country> countries;
 
-	public List<Country> getCountries() {
-	    return countries;
-	}
+        public List<Country> getCountries() {
+            return countries;
+        }
 
-	public void setCountries(List<Country> countries) {
-	    this.countries = countries;
-	}
-	
-	
+        public void setCountries(List<Country> countries) {
+            this.countries = countries;
+        }
+
+
     }
-    
+
     public static void main(String[] args) {
-	ApplicationContext ctx = SpringApplication.run(AdsApplication.class, args);
-	ResourceDatabasePopulator resourceDatabasePopulator = new ResourceDatabasePopulator();
-	resourceDatabasePopulator.addScript(new ClassPathResource("/countries.sql"));
-	resourceDatabasePopulator.addScript(new ClassPathResource("/regions.sql"));
-	resourceDatabasePopulator.setContinueOnError(false);
-	javax.sql.DataSource dataSource = ctx.getBean(javax.sql.DataSource.class);
-	DatabasePopulatorUtils.execute(resourceDatabasePopulator , dataSource);
-	
-	}
+        ApplicationContext ctx = SpringApplication.run(AdsApplication.class, args);
+        ResourceDatabasePopulator resourceDatabasePopulator = new ResourceDatabasePopulator();
+        resourceDatabasePopulator.addScript(new ClassPathResource("/countries.sql"));
+        resourceDatabasePopulator.addScript(new ClassPathResource("/regions.sql"));
+        resourceDatabasePopulator.setContinueOnError(false);
+        javax.sql.DataSource dataSource = ctx.getBean(javax.sql.DataSource.class);
+        DatabasePopulatorUtils.execute(resourceDatabasePopulator, dataSource);
+
+    }
 
     @Override
     public void run(String... args) throws Exception {

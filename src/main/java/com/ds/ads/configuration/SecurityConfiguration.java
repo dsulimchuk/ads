@@ -13,11 +13,13 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
 
     @Autowired
     public void configureGlobal(AuthenticationManagerBuilder builder) throws Exception {
-        System.out.println("!!!!!!!!!!!!");
-        builder.
-                inMemoryAuthentication().
-                withUser("user").
-                password("user1").roles("USER");
+        //TODO
+        builder
+//            .jdbcAuthentication()
+                .inMemoryAuthentication()
+                .withUser("user")
+                .password("user1")
+                .roles("USER");
 
     }
 
